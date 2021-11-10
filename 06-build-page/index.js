@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const rimraf = require('rimraf');
 
 const templateReg = /{{[a-zA-X0-9]+}}/g;
 const fullPathToAssets = path.join(__dirname, '/assets');
@@ -76,8 +75,8 @@ fs.access(path.join(__dirname, '/project-dist'), (err) => {
       indexHtml.write(newTemplate);
     }, 500);
   } else {
-    rimraf(__dirname + '/project-dist', function () {
-      console.log('done');
+    fs.rmdir(__dirname + '/project-dist', { recursive: true }, err => {
+      if(err) throw err; 
     });
     setTimeout(() => {
       fs.mkdir(path.join(__dirname, '/project-dist'), (error) => {
